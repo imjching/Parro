@@ -29,6 +29,7 @@ The Q&A portion was implemented with api.ai, so that candidates could ask any of
 
 ## Demo
 
+[![IMAGE ALT TEXT HERE](parro.png)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
 
 ## Contributing
 
