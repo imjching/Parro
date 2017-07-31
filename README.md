@@ -23,11 +23,9 @@ For the technical interview, we used the [React version](https://github.com/JedW
 
 The biggest challenge here was having to make multiple asynchronous API calls to glot.io to run each of the inputs we wanted to run for a given interview question. We used Axios to make each of the calls and pushed the results onto an array, where we were able to rely on Promise.all() to proceed smoothly and check the actual outputs against the expected outputs. This control flow involved requests and responses between the front and backends, multiple asynchronous API calls which we needed to keep ordered, and output validation, all of which made it really difficult to debug. Additionally, running code in whitespace sensitive languages like Python proved to be a bit of a challenge and requires special parsing and formatting to ensure that the code gets run exactly the way the candidate typed it in the text editor, which was a non-issue in languages like JavaScript, Java, and C++.
 
-**Q&A**
+**Q&A Implementation**
 
-The Q&A portion requires employers to provide writeup
-
-**Statistics**
+The Q&A portion was implemented with api.ai, so that candidates could ask any of the typical questions about a company and get a smart response back. This does require that companies provide some information about themselves. When the candidate is satisfied, they can say something that sounds like the end of a conversation like "Thanks so much, that's all!" and the interview will be terminated.
 
 ## Demo
 
