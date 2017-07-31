@@ -14,16 +14,18 @@ This was an idea that resulted from a number of pivots before we ultimately zero
 to solve: a technical interview process that's automated from start to finish. We've even added support for a Q&A session at the end of the interview, where candidates can ask Parro about the company for which they're interviewing and receive answers. There are platforms that handle the technical side like HackerRank, Codility, and others, but none of them provide support for automating the behavioral side of the hiring process, which really matters to certain startups and companies. That's what Parro was built to do.
 
 **Behavioral Implementation**
---facial recognition and login
 
 For the behavioral interview, we used IBM Watson to perform speech to text translation, tone analysis, personality insight, and text to speech conversion. This allowed us write algorithms to pull metrics out of a candidate's responses like their most frequently used words, use of hesitation words (use of "like", "um", and "uh", for example), speech clarity and coherence, and speaking speed.
 
 **Technical Implementation**
 
-For the technical interview, we used the [React version](https://github.com/JedWatson/react-codemirror) of CodeMirror to embed a Text Editor into a webpage. Since there's no way to run code inside of that editor, we had to pull the code out of the text editor and make a request to the backend. From there, we used [glot.io](http://glot.io/) to actually run the candidate's code using test inputs. Depending on whether their output was correct, incorrect, or errored, we sent a response back to the frontend that rendered a message with the result.
+For the technical interview, we used the [React version](https://github.com/JedWatson/react-codemirror) of CodeMirror to embed a Text Editor into a webpage. Since there's no way to run code inside of that editor, we had to pull the code out of the text editor and make a request to the backend. From there, we made an API call to [glot.io](http://glot.io/) to actually run the candidate's code using test inputs. Depending on whether their output was correct, incorrect, or errored, we sent a response back to the frontend that rendered a message with the result.
+
+The biggest challenge here was having to make multiple asynchronous API calls to glot.io to run each of the inputs we wanted to run for a given interview question. We used Axios to make each of the calls and pushed the results onto an array, where we were able to rely on Promise.all() to proceed smoothly and check the actual outputs against the expected outputs. This control flow involved requests and responses between the front and backends, multiple asynchronous API calls which we needed to keep ordered, and output validation, all of which made it really difficult to debug. Additionally, running code in whitespace sensitive languages like Python proved to be a bit of a challenge and requires special parsing and formatting to ensure that the code gets run exactly the way the candidate typed it in the text editor, which was a non-issue in languages like JavaScript, Java, and C++.
 
 **Q&A**
 
+The Q&A portion requires employers to provide writeup
 
 **Statistics**
 
