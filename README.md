@@ -25,7 +25,7 @@ The biggest challenge here was having to make multiple asynchronous API calls to
 
 **Q&A Implementation**
 
-The Q&A portion was implemented with api.ai, so that candidates could ask any of the typical questions about a company and get a smart response back. This does require that companies provide some information about themselves. When the candidate is satisfied, they can say something that sounds like the end of a conversation like "Thanks so much, that's all!" and the interview will be terminated.
+The Q&A portion was implemented with api.ai, so that candidates could ask any of the typical questions about a company and get a smart response back. This does require that companies provide some information about themselves. When the candidate is satisfied, they can say something that sounds like the end of a conversation and the interview will be terminated.
 
 ## Demo
 
