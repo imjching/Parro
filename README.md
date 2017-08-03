@@ -15,7 +15,23 @@ to solve: a technical interview process that's automated from start to finish. W
 
 **Behavioral Implementation**
 
-For the behavioral interview, we used IBM Watson to perform speech to text translation, tone analysis, personality insight, and text to speech conversion. This allowed us write algorithms to pull metrics out of a candidate's responses like their most frequently used words, use of hesitation words (use of "like", "um", and "uh", for example), speech clarity and coherence, and speaking speed.
+For the behavioral interview, we used IBM Watson to perform speech to text translation, tone analysis, and personality insights. In order to get Parro to return an audio response, we used [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis) from the Web Speech API. Through Watson's speech to text translation, we were able to write algorithms to pull metrics out of a candidate's responses like their most frequently used words, use of hesitation words (use of "like", "um", and "uh", for example), speech clarity and coherence, and speaking speed. This, in fact, was our biggest challenge here - trying to figure out what kind of insights can we obtain from the translation data.
+
+Another challenge that we encountered was using IBM Watson's text to speech API itself. Initially, we were making curl requests through the terminal to try the API out:
+
+```bash
+curl -X POST -u {username}:{password}
+--header "Content-Type: audio/flac"
+--header "Transfer-Encoding: chunked"
+--data-binary audio-file.flac
+"https://stream.watsonplatform.net/speech-to-text/api/v1/recognize"
+```
+
+We realized that omitting the at symbol (@) prefix from the data-binary flag will post data exactly as specified, i.e. the string "audio-file.flac", and not the contents of the file.
+
+We then used the [node-sdk](https://github.com/watson-developer-cloud/node-sdk) package provided by IBM in our backend server to make API calls to IBM Watson. In order to prevent rate limiting while writing algorithms to pull metrics out of the same data, we cached the result of our first API call by writing the response to a JSON file so that we could reference it at a later time.
+
+Throughout the entire debugging process, we learned that JSON.stringify() accepts multiple parameters. For example, doing JSON.stringify(obj, null, 4) will format the object with a standard pretty-print appearance (4 tabs and new lines).
 
 **Technical Implementation**
 
@@ -30,6 +46,10 @@ The Q&A portion was implemented with api.ai, so that candidates could ask any of
 **Frontend**
 
 Our frontend was built using [React](https://facebook.github.io/react/) and [Bulma](http://bulma.io/), a responsive, flex-box based CSS framework. Parro's seamless user interface required little to no user effort, as in the entire experience was guided by us. Therefore, managing state as well as event handling got complicated. For example, rendering different components based off user inputs, or the same component with different props, at the same route meant clearly tracking the state. Another difficulty we overcame was dealing with video and audio recording. We used [RecordRTC](https://github.com/muaz-khan/RecordRTC/) to send audio and video snippets to our server. The frontend dealt with timeslicing our video blobs and capturing audio at the appropriate intervals to only process what was necessary.
+
+**Backend**
+
+Our backend was built using [Express](https://expressjs.com/). One difficulty we encountered was receiving audio and video blobs in an encoded form. To overcome that, we implemented [multer](https://github.com/expressjs/multer), an express middleware to parse incoming files encoded as "multipart/form-data" and store them in a predefined folder on disk.
 
 ## Demo
 
